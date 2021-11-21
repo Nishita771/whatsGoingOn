@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="module">
+        import hasPermission from "./permissions.js";
+        import {
+            actions
+        } from "./constants.js";
+        window.hasPermission=hasPermission;
+        window.actions=actions;
+    </script>
+    <style>
+        select {
+            padding: 5px;
+            margin-left: 200px;
+            outline: none;
+
+
+        }
+
+        .buttons {
+            display: flex;
+            width: 550px;
+            justify-content: space-around;
+            margin: 100px 0px 20px 200px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="buttons">
+        <button id="view" class="btn btn-primary" type="button">VIEW_STORY</button>
+        <button id="create" class="btn btn-primary" type="button">CREATE_STORY</button>
+        <button id="modify" class="btn btn-primary" type="button">MODIFY_STORY</button>
+        <button id="delete" class="btn btn-primary" type="button">DELETE_STORY</button>
+    </div>
+    <select onchange="run()" name="role" id="role">
+        <option value="ADMIN">ADMIN</option>
+        <option value="EDITOR">EDITOR</option>
+        <option value="GUEST">GUEST</option>
+    </select>
+
+
+    <script type="text/javascript">
+        function run() {
+            var e = document.getElementById("role");
+            var role = e.value;
+            console.log(role)
+            dd(role)
+
+        }
+
+        function dd(role) {
+            console.log(role)
+            if (!hasPermission(role, actions.MODIFY_STORY))
+                document.getElementById("modify").style.visibility = "hidden";
+            else
+                document.getElementById("modify").style.visibility = 'visible'
+
+            if (!hasPermission(role, actions.CREATE_STORY))
+                document.getElementById("create").style.visibility = "hidden";
+            else
+                document.getElementById("create").style.visibility = 'visible'
+
+            if (!hasPermission(role, actions.DELETE_STORY))
+                document.getElementById("delete").style.visibility = "hidden";
+            else
+                document.getElementById("delete").style.visibility = 'visible'
+
+            if (!hasPermission(role, actions.VIEW_STORY))
+                document.getElementById("view").style.visibility = "hidden";
+            else
+                document.getElementById("view").style.visibility = 'visible'
+
+
+        }
+    </script>
+</body>
+
+
+</html>
